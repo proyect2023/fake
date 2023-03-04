@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "sweetalert2@11.7.3",
+      "destination": "lib/sweetalert2/"
+    },
+    {
+      "library": "jquery-maskmoney@3.0.2",
+      "destination": "lib/jquery-maskmoney/"
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+﻿@model List<PruebaRapidiagnostics.ApplicationCore.DTOs.Services.ProductoDto>
+@{
+    ViewBag.Title = "Index";
+}
+
+@section Styles {
+
+    <link href="~/lib/sweetalert2/sweetalert2.css" rel="stylesheet" />
+}
+
+<div class="panel ">
+    <div class="panel-body">
+
+        <a class="btn btn-success" href="@Url.Action("Registrar")">Crear</a>
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Codigo</th>
+                    <th>Nombre</th>
+                    <th>Stock</th>
+                    <th>Precio</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <a class="btn btn-info" href="@Url.Action("Registrar")?id=@item.Id">Editar</a>
+                            <button class="btn btn-danger" onclick="Eliminar(@item.Id)">Eliminar</button>
+                        </td>
+                        <td>@item.Codigo</td>
+                        <td>@item.Nombre</td>
+                        <td>@item.Cantidad</td>
+                        <td>@item.Precio</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script src="~/lib/sweetalert2/sweetalert2.all.min.js"></script>
+
+    <script>
+        const Eliminar = (id) => {
+
+            Swal.fire({
+                title: 'Eliminar registro',
+                text: '¿Esta seguro de eliminar el registro?',
+                showCancelButton: true,
+                confirmButtonText: 'Eliminar',
+            }).then((result) => {
+                startLoading();
+                if (result.isConfirmed) {
+                   $.post('@Url.Action("Eliminar")', { id }).done(function (response) {
+                       endLoading();
+                       window.reload();
+                    }).fail(function (error) {
+                        endLoading();
+                    })
+                }
+            })
+        }
+
+        const startLoading = () => {
+            Swal.fire({
+                title: 'Cargando',
+                text: 'No cierre la ventana'
+            });
+            Swal.showLoading();
+        }
+
+        const endLoading = () => {
+            Swal.hideLoading();
+        }
+    </script>
+    @if (TempData["Mensaje"] != null)
+    {
+        <script>
+            Swal.fire({
+                title: 'Exitoso',
+                text: '@TempData["Mensaje"]'
+            });
+        </script>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <script>
+            Swal.fire({
+                title: 'Exitoso',
+                text: '@TempData["Error"]'
+            });
+        </script>
+    }
+}
